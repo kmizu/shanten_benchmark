@@ -111,8 +111,20 @@ object ShantenAnalysisImproved {
   }
 
   def isValidTargetVector(targetVector:Array[Int]):Boolean = {
-    return targetVector.forall(_ <= 4)
+    var pid = 0
+    while (pid < targetVector.length) {
+      if (targetVector(pid) > 4) return false
+      pid += 1
+    }
+    true
   }
+
+  /*
+      def isValidTargetVector(targetVector:Array[Int]):Boolean = {
+          targetVector.forall(_ <= 4)
+      }
+
+  */
 
   def addMentsu(targetVector:Array[Int], mentsuId:Int) = {
     var mentsu = mentsus(mentsuId)
