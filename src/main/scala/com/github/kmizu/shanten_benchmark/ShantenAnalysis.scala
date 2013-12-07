@@ -4,13 +4,13 @@ package shanten_benchmark
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 
-object ShantenAnalysisA {
+object ShantenAnalysis {
 
   val NUM_PIDS = 9 * 3 + 7
   var mentsus:ArrayBuffer[Array[Int]] = null
 
   def main(args: Array[String]) {
-    val result = benchmark {
+    val result = benchmark{
       mentsus = createMentsus()
       val src = Source.fromFile("shanten_benchmark_data.num.txt")
       for (line <- src.getLines) {
