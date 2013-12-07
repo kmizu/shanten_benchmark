@@ -25,7 +25,7 @@ object ShantenAnalysisUsingWhile {
         }
       }
     }
-    println(result)
+    printResult(result.median)
   }
 
   def createMentsus():ArrayBuffer[Array[Int]] = {
