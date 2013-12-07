@@ -8,7 +8,7 @@ object ShantenAnalysisOptimized {
   val NUM_PIDS = 9 * 3 + 7
   var mentsus:ArrayBuffer[Array[Int]] = null
 
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     val result = benchmark{
       mentsus = createMentsus()
       val src = Source.fromFile("shanten_benchmark_data.num.txt")
@@ -27,7 +27,7 @@ object ShantenAnalysisOptimized {
     println(result)
   }
 
-  def createMentsus():ArrayBuffer[Array[Int]] = {
+  def createMentsus(): ArrayBuffer[Array[Int]] = {
     var mentsus = new ArrayBuffer[Array[Int]]()
     for(pid <- 0 until NUM_PIDS) {
       mentsus.append(Array(pid, pid, pid))
@@ -41,13 +41,13 @@ object ShantenAnalysisOptimized {
     mentsus
   }
 
-  def calculateShantensu(pids:Seq[Int]):Int = {
+  def calculateShantensu(pids: Seq[Int]): Int = {
     val countVector = pidsToCountVector(pids)
     calculateShantensuInternal(countVector, new Array[Int](NUM_PIDS), 4, 0, Int.MaxValue)
   }
 
-  def pidsToCountVector(pids:Seq[Int]):Array[Int] = {
-    var countVector = new Array[Int](NUM_PIDS)
+  def pidsToCountVector(pids:Seq[Int]): Array[Int] = {
+    val countVector = new Array[Int](NUM_PIDS)
     for(pid <- pids) {
       countVector(pid) += 1
     }
@@ -55,12 +55,12 @@ object ShantenAnalysisOptimized {
   }
 
   def calculateShantensuInternal(
-    currentVector:Array[Int],
-    targetVector:Array[Int],
-    leftMentsu:Int,
-    minMentsuId:Int,
-    foundMinShantensu:Int
-  ):Int = {
+    currentVector: Array[Int],
+    targetVector: Array[Int],
+    leftMentsu: Int,
+    minMentsuId: Int,
+    foundMinShantensu: Int
+  ): Int = {
     var minShantensu = foundMinShantensu
     if(leftMentsu == 0) {
       for(pid <- 0 until NUM_PIDS) {
@@ -86,7 +86,7 @@ object ShantenAnalysisOptimized {
     minShantensu
   }
 
-  def calculateShantensuLowerbound(currentVector:Array[Int], targetVector:Array[Int]):Int = {
+  def calculateShantensuLowerbound(currentVector: Array[Int], targetVector: Array[Int]): Int = {
     var count = 0
     for(pid <- 0 until NUM_PIDS) {
       if(targetVector(pid) > currentVector(pid)) {
@@ -96,7 +96,7 @@ object ShantenAnalysisOptimized {
     count - 1
   }
 
-  def isValidTargetVector(targetVector:Array[Int]):Boolean = {
+  def isValidTargetVector(targetVector: Array[Int]): Boolean = {
     var pid = 0
     while (pid < targetVector.length) {
       if (targetVector(pid) > 4) return false
@@ -105,13 +105,13 @@ object ShantenAnalysisOptimized {
     true
   }
 
-  def addMentsu(targetVector:Array[Int], mentsuId:Int) = {
+  def addMentsu(targetVector :Array[Int], mentsuId :Int): Unit = {
     for(pid <- mentsus(mentsuId)) {
       targetVector(pid) += 1
     }
   }
 
-  def removeMentsu(targetVector:Array[Int], mentsuId:Int) = {
+  def removeMentsu(targetVector: Array[Int], mentsuId:Int): Unit = {
     for(pid <- mentsus(mentsuId)) {
       targetVector(pid) -= 1
     }
