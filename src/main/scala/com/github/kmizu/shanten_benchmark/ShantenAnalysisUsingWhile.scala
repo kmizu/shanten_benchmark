@@ -4,13 +4,13 @@ package shanten_benchmark
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 
-object ShantenAnalysisImproved {
+object ShantenAnalysisUsingWhile {
 
   val NUM_PIDS = 9 * 3 + 7
   var mentsus:ArrayBuffer[Array[Int]] = null
 
   def main(args: Array[String]) {
-    val result = benchmark {
+    val result = benchmark{
       mentsus = createMentsus()
       val src = Source.fromFile("shanten_benchmark_data.num.txt")
       for (line <- src.getLines) {
@@ -45,12 +45,12 @@ object ShantenAnalysisImproved {
       }
       t += 1
     }
-    return mentsus
+    mentsus
   }
 
   def calculateShantensu(pids:Seq[Int]):Int = {
     val countVector = pidsToCountVector(pids)
-    return calculateShantensuInternal(countVector, new Array[Int](NUM_PIDS), 4, 0, Int.MaxValue)
+    calculateShantensuInternal(countVector, new Array[Int](NUM_PIDS), 4, 0, Int.MaxValue)
   }
 
   def pidsToCountVector(pids:Seq[Int]):Array[Int] = {
@@ -60,15 +60,16 @@ object ShantenAnalysisImproved {
       countVector(pids(i)) += 1
       i += 1
     }
-    return countVector
+    countVector
   }
 
   def calculateShantensuInternal(
-                                  currentVector:Array[Int],
-                                  targetVector:Array[Int],
-                                  leftMentsu:Int,
-                                  minMentsuId:Int,
-                                  foundMinShantensu:Int):Int = {
+    currentVector:Array[Int],
+    targetVector:Array[Int],
+    leftMentsu:Int,
+    minMentsuId:Int,
+    foundMinShantensu:Int
+  ):Int = {
     var minShantensu = foundMinShantensu
     if(leftMentsu == 0) {
       var pid = 0
@@ -95,7 +96,7 @@ object ShantenAnalysisImproved {
         mentsuId += 1
       }
     }
-    return minShantensu
+    minShantensu
   }
 
   def calculateShantensuLowerbound(currentVector:Array[Int], targetVector:Array[Int]):Int = {
@@ -107,24 +108,12 @@ object ShantenAnalysisImproved {
       }
       pid += 1
     }
-    return count - 1
+    count - 1
   }
 
   def isValidTargetVector(targetVector:Array[Int]):Boolean = {
-    var pid = 0
-    while (pid < targetVector.length) {
-      if (targetVector(pid) > 4) return false
-      pid += 1
-    }
-    true
+    targetVector.forall(_ <= 4)
   }
-
-  /*
-      def isValidTargetVector(targetVector:Array[Int]):Boolean = {
-          targetVector.forall(_ <= 4)
-      }
-
-  */
 
   def addMentsu(targetVector:Array[Int], mentsuId:Int) = {
     var mentsu = mentsus(mentsuId)

@@ -1,11 +1,9 @@
-package com.github.kmizu
-package shanten_benchmark
-
+package com.github.kmizu.shanten_benchmark
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 
-object ShantenAnalysis {
+object ShantenAnalysisOptimized {
 
   val NUM_PIDS = 9 * 3 + 7
   var mentsus:ArrayBuffer[Array[Int]] = null
@@ -99,7 +97,12 @@ object ShantenAnalysis {
   }
 
   def isValidTargetVector(targetVector:Array[Int]):Boolean = {
-    targetVector.forall(_ <= 4)
+    var pid = 0
+    while (pid < targetVector.length) {
+      if (targetVector(pid) > 4) return false
+      pid += 1
+    }
+    true
   }
 
   def addMentsu(targetVector:Array[Int], mentsuId:Int) = {
