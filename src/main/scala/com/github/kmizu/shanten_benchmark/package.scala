@@ -6,7 +6,7 @@ package object shanten_benchmark {
     def run(): Unit = body
   }
 
-  def benchmark[A](body: => A, numberOfTimes: Int = 1): List[Long] = {
+  def benchmark[A](body: => A, numberOfTimes: Int = 10): List[Long] = {
     new SimpleBenchmark[A](body).runBenchmark(numberOfTimes)
   }
 }

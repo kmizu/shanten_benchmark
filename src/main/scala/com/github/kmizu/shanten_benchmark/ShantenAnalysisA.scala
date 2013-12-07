@@ -10,19 +10,22 @@ object ShantenAnalysisA {
   var mentsus:ArrayBuffer[Array[Int]] = null
 
   def main(args: Array[String]) {
-    mentsus = createMentsus()
-    val src = Source.fromFile("shanten_benchmark_data.num.txt")
-    for (line <- src.getLines) {
-      val sline = line.stripLineEnd
-      val row = sline split " "
-      val pids = row.slice(0, row.length - 1).map(_.toInt)
-      val expectedShantensu = row(row.length - 1).toInt
-      val actualShantensu = calculateShantensu(pids)
-      if(actualShantensu != expectedShantensu) {
-        throw new RuntimeException(
-          "Shantensu mismatch: %d != %d: %s" format (actualShantensu, expectedShantensu, sline))
+    val result = benchmark {
+      mentsus = createMentsus()
+      val src = Source.fromFile("shanten_benchmark_data.num.txt")
+      for (line <- src.getLines) {
+        val sline = line.stripLineEnd
+        val row = sline split " "
+        val pids = row.slice(0, row.length - 1).map(_.toInt)
+        val expectedShantensu = row(row.length - 1).toInt
+        val actualShantensu = calculateShantensu(pids)
+        if(actualShantensu != expectedShantensu) {
+          throw new RuntimeException(
+            "Shantensu mismatch: %d != %d: %s" format (actualShantensu, expectedShantensu, sline))
+        }
       }
     }
+    println(result)
   }
 
   def createMentsus():ArrayBuffer[Array[Int]] = {
